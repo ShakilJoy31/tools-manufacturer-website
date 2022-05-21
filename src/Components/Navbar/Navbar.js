@@ -10,7 +10,7 @@ const Navbar = () => {
         
     </>
     return (
-        <div className='lg:mx-48'>
+        <div>
             <div class="navbar bg-base-100 flex justify-between">
                 <div class="navbar-start">
                     <div class="dropdown">

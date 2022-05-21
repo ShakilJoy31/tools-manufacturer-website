@@ -6,7 +6,7 @@ import Home from './Components/Home/Home';
 
 function App() {
   return (
-    <div className="App">
+    <div className='lg:mx-48'>
       <Navbar></Navbar>
       <Routes>
         <Route path='/' element={<Home></Home>}></Route>
