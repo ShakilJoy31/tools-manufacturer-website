@@ -1,0 +1,50 @@
+[
+    {
+        "name":"Hammer", 
+        "img":"https://static-01.daraz.com.bd/p/d7ab62005e811ad4b1da9750a2f07b53.jpg", 
+        "description":"this is description",
+        "minimumOrder":"100", 
+        "availableQuantity":"200", 
+        "price":"230" 
+    }, 
+    {
+        "name":"Drill Machine", 
+        "img":"https://4.imimg.com/data4/IH/VK/MY-3228012/bosch-drill-machine-13-mm-500x500.jpg", 
+        "description":"this is description",
+        "minimumOrder":"100", 
+        "availableQuantity":"200", 
+        "price":"230" 
+    }, 
+    {
+        "name":"Screw Driver", 
+        "img":"https://m.media-amazon.com/images/I/51NMmw+lGvL._AC_SL1000_.jpg", 
+        "description":"this is description",
+        "minimumOrder":"100", 
+        "availableQuantity":"200", 
+        "price":"230" 
+    }, 
+    {
+        "name":"Wrench", 
+        "img":"https://www.harborfreight.com/media/catalog/product/cache/9fc4a8332f9638515cd199dd0f9238da/6/7/67150_W3.jpg", 
+        "description":"this is description",
+        "minimumOrder":"100", 
+        "availableQuantity":"200", 
+        "price":"230" 
+    }, 
+    {
+        "name":"Electric Saw", 
+        "img":"https://image.made-in-china.com/202f0j00CnoaltsdhugR/Electric-Circular-Saw-Electric-Saw-Types.jpg", 
+        "description":"this is description",
+        "minimumOrder":"100", 
+        "availableQuantity":"200", 
+        "price":"230" 
+    }, 
+    {
+        "name":"Hack Saw", 
+        "img":"https://assets.tramontina.com.br/upload/tramon/imagens/GAR/43302012PNM001G.png", 
+        "description":"this is description",
+        "minimumOrder":"100", 
+        "availableQuantity":"200", 
+        "price":"230" 
+    }
+]
