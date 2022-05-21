@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Business from './Business';
+import Review from './Review';
 import Tools from './Tools';
 
 const Home = () => {
@@ -30,6 +31,7 @@ const Home = () => {
             </div>
 
             <Business></Business>
+            <Review></Review>
         </div>
     );
 };
