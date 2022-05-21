@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Business from './Business';
+import Footer from './Footer';
 import Review from './Review';
 import Tools from './Tools';
 
@@ -12,6 +13,7 @@ const Home = () => {
     }, [])
     return (
         <div>
+            <div className='lg:mx-48'>
             <h1>This is home. </h1>
 
 
@@ -32,6 +34,10 @@ const Home = () => {
 
             <Business></Business>
             <Review></Review>
+        </div>
+           <div className='bg-indigo-200 mt-12'>
+           <Footer></Footer>
+           </div>
         </div>
     );
 };

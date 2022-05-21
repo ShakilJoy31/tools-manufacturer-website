@@ -7,7 +7,7 @@ import Parchas from './Components/Parchas/Parchas';
 
 function App() {
   return (
-    <div className='lg:mx-48'>
+    <div>
       <Navbar></Navbar>
       <Routes>
         <Route path='/' element={<Home></Home>}></Route>

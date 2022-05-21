@@ -5,7 +5,7 @@ const Business = () => {
         <div>
             <div className='flex justify-center mt-48 mb-8'>
                 <div class="card shadow-2xl w-full">
-                    <div class="card-body">
+                    <div class="card-body bg-blue-200">
                         <h1 className='text-5xl text-purple-500 font-bold flex justify-center mb-4'>Having Your Trust is our GOAL!</h1>
                         <h1 className='text-blue-700 flex justify-center text-3xl'>We care of your expectation...</h1>
 
