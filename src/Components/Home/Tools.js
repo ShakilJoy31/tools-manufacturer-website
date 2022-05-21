@@ -1,8 +1,16 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Tools = (props) => {
-    const { name, img, description, minimumOrder, availableQuantity, price } = props.tool;
-    console.log(name);
+    const {_id, name, img, description, minimumOrder, availableQuantity, price } = props.tool;
+
+
+    const navigate = useNavigate(); 
+    const handleTakeParchasPage = (id) =>{
+        navigate(`/parchas/${id}`); 
+    }
+
+
     return (
         <div>
             <div class="card shadow-2xl">
@@ -18,7 +26,7 @@ const Tools = (props) => {
                     </div>
                     </div>
                     <div class="card-actions justify-center">
-                    <button class="btn btn-outline btn-accent w-64">Place Order</button>
+                    <button onClick={()=>handleTakeParchasPage(_id)} class="btn btn-outline btn-accent w-64">Place Order</button>
                     </div>
                 </div>
             </div>
