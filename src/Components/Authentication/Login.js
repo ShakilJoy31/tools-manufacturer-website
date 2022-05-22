@@ -8,6 +8,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useLocation } from 'react-router-dom';
 import auth from '../firebase.init';
+import Loading from '../Shared/Loading';
 
 const Login = () => {
 
@@ -45,11 +46,13 @@ const Login = () => {
         signInWithGithub();
     }
 
-    const [generalUser] = useAuthState(auth);
-
-
-
-
+    const [generalUser, generalLoading] = useAuthState(auth);
+    if(generalUser){
+        navigate(from, {replace: true})
+    }
+    if(generalLoading){
+        return <Loading></Loading>
+    }
 
     return (
         <div className='flex items-center justify-center h-screen'>

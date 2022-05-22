@@ -6,6 +6,7 @@ import Home from './Components/Home/Home';
 import Parchas from './Components/Parchas/Parchas';
 import Login from './Components/Authentication/Login';
 import SignUp from './Components/Authentication/SignUp';
+import RequireAuth from './Components/Shared/RequireAuth';
 
 function App() {
   return (
@@ -14,7 +15,9 @@ function App() {
       <Routes>
         <Route path='/' element={<Home></Home>}></Route>
 
-        <Route path='/parchas/:id' element={<Parchas></Parchas>}></Route>
+        <Route path='/parchas/:id' element={<RequireAuth>
+          <Parchas></Parchas>
+        </RequireAuth>}></Route>
 
         <Route path='/signup' element={<SignUp></SignUp>}></Route>
 

@@ -22,7 +22,7 @@ const Tools = (props) => {
                     <p><span className='text-orange-500'>Description: </span>{description}</p>
                     <p><span className='text-orange-500'>Minimum Order: </span>{minimumOrder}</p>
                     <p><span className='text-orange-500'>Available: </span>{availableQuantity}</p>
-                    <p><span className='text-orange-500'>Price: </span>{price}</p>
+                    <p><span className='text-orange-500'>Price: </span>{price}$ per unit</p>
                     </div>
                     </div>
                     <div class="card-actions justify-center">
