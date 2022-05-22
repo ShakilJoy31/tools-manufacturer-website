@@ -54,6 +54,54 @@ const Login = () => {
         return <Loading></Loading>
     }
 
+    if(generalUser){
+        const userEmail = generalUser?.email;
+            const userName = generalUser?.displayName;
+            fetch(`http://localhost:5000/adduser/${userEmail}`, {
+                method: 'PUT',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify({ userName, userEmail })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    console.log(data);
+                })
+    }
+
+    if(googleUser){
+        const userEmail = googleUser?.user?.email;
+        const userName = googleUser?.user?.displayName;
+        fetch(`http://localhost:5000/adduser/${userEmail}`, {
+            method: 'PUT',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify({ userName, userEmail })
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+            })   
+    }
+
+    if(githubUser){
+        const userEmail = githubUser?.user?.email;
+    const userName = githubUser?.user?.displayName;
+    fetch(`http://localhost:5000/adduser/${userEmail}`, {
+        method: 'PUT',
+        headers: {
+            'content-type': 'application/json'
+        },
+        body: JSON.stringify({ userName, userEmail })
+    })
+        .then(res => res.json())
+        .then(data => {
+            console.log(data);
+        })
+    }
+
     return (
         <div className='flex items-center justify-center h-screen'>
             <div className='grid'>
@@ -118,7 +166,7 @@ const Login = () => {
 
                                 {
                                     githubLoading ? <button class="btn btn-outline btn-square loading w-full">Signing up with github...</button> :
-                                        <button onClick={handleSignInWithGithub} class="btn btn-outline block mx-auto w-full mt-2 text-xl max-w-lg ">Continue With Google
+                                        <button onClick={handleSignInWithGithub} class="btn btn-outline block mx-auto w-full mt-2 text-xl max-w-lg ">Continue With Github
                                         </button>
                                 }
                                 {

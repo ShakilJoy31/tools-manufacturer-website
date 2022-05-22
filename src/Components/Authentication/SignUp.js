@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthState, useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { useSignInWithGoogle } from 'react-firebase-hooks/auth';
@@ -7,6 +7,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useUpdateProfile } from 'react-firebase-hooks/auth';
 import auth from '../firebase.init';
+import Adduser from '../Adduser';
 
 
 
@@ -22,32 +23,86 @@ const SignUp = () => {
 
     const [generalUser] = useAuthState(auth);
 
+    const AddUserToDatabase = () =>{
+        
+    }
+
     const [signInWithGoogle, googleUser, googleLoading, googleError] = useSignInWithGoogle(auth);
 
     const [signInWithGithub, githubUser, githubLoading, githubError] = useSignInWithGithub(auth);
 
     const handleOnSubmitButtonForSignUp = async event => {
         event.preventDefault();
-        const name = event.target.name.value; 
+        const name = event.target.name.value;
         const email = event.target.email.value;
         const password = event.target.password.value;
         const confirmPassword = event.target.confirmPassword.value;
         if (password === confirmPassword) {
             await createUserWithEmailAndPassword(email, password);
-            await updateProfile({displayName: name})
-            
+            await updateProfile({ displayName: name })
         }
     }
 
+    if(generalUser){
+        const userEmail = generalUser?.email;
+            const userName = generalUser?.displayName;
+            fetch(`http://localhost:5000/adduser/${userEmail}`, {
+                method: 'PUT',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify({ userName, userEmail })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    console.log(data);
+                })
+    }
+
+    console.log(generalUser); 
+    
     const handleSignInWithGoogle = () => {
         signInWithGoogle();
     }
+
+    if(googleUser){
+            const userEmail = googleUser?.user?.email;
+            const userName = googleUser?.user?.displayName;
+            fetch(`http://localhost:5000/adduser/${userEmail}`, {
+                method: 'PUT',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify({ userName, userEmail })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    console.log(data);
+                })   
+        }
 
     const handleSignInWithGithub = () => {
         signInWithGithub();
     }
 
-    
+
+    if(githubUser){
+        const userEmail = githubUser?.user?.email;
+    const userName = githubUser?.user?.displayName;
+    fetch(`http://localhost:5000/adduser/${userEmail}`, {
+        method: 'PUT',
+        headers: {
+            'content-type': 'application/json'
+        },
+        body: JSON.stringify({ userName, userEmail })
+    })
+        .then(res => res.json())
+        .then(data => {
+            console.log(data);
+        })
+    }
+
+
     const handleSentToLogIn = () => {
         navigate('/login')
     }
@@ -95,7 +150,7 @@ const SignUp = () => {
 
                                 {
                                     loading ? <button class="btn btn-outline btn-square loading mt-5 w-full">Signing up...</button> :
-                                    <input type='submit' value='Sign up'
+                                        <input type='submit' value='Sign up'
                                             className='btn btn-outline block mx-auto w-full mt-5 text-xl max-w-lg'
                                         />
                                 }
@@ -118,7 +173,7 @@ const SignUp = () => {
 
                                 {
                                     googleLoading ? <button class="btn btn-outline btn-square loading w-full">Signing up with google...</button> :
-                                    <button onClick={handleSignInWithGoogle} class="btn btn-outline block mx-auto w-full mt-2 text-xl max-w-lg">Continue with google</button>
+                                        <button onClick={handleSignInWithGoogle} class="btn btn-outline block mx-auto w-full mt-2 text-xl max-w-lg">Continue with google</button>
                                 }
 
                                 {
@@ -128,7 +183,7 @@ const SignUp = () => {
 
                                 {
                                     githubLoading ? <button class="btn btn-outline btn-square loading w-full">Signing up with github...</button> :
-                                    <button onClick={handleSignInWithGithub} class="btn btn-outline block mx-auto w-full mt-2 text-xl max-w-lg">Continue with Github</button>
+                                        <button onClick={handleSignInWithGithub} class="btn btn-outline block mx-auto w-full mt-2 text-xl max-w-lg">Continue with Github</button>
                                 }
 
                                 {
