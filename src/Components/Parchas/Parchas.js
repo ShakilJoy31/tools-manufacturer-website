@@ -1,24 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
+  import 'react-toastify/dist/ReactToastify.css';
 import auth from '../firebase.init';
 
 const Parchas = () => {
     const [address, setAddress] = useState(''); 
     const [phone, setPhone] = useState(''); 
-    const [increasedProduct, setIncreasedProduct] = useState(); 
+    const [updatedProduct, setUpdatedProduct] = useState(); 
     const [quantityError, setQuantityError] = useState(''); 
     const [lessQuantity, setLessQuantityError] = useState(''); 
+    const [totalPrice, setTotalPrice] = useState(150*230); 
     const {id} = useParams();
     const [product, setProduct] = useState([]);  
+    const [success, setSuccess] = useState(''); 
     useEffect(()=>{
         fetch(`http://localhost:5000/parchas/${id}`)
         .then(res => res.json())
         .then(data => setProduct(data))
     },[])
-
+ 
     useEffect(()=>{
-        setIncreasedProduct(product?.availableQuantity - 50)
+        setUpdatedProduct(product?.availableQuantity - 50)
     },[product?.availableQuantity])
 
     const makeNumber = parseInt(product?.availableQuantity); 
@@ -35,34 +39,90 @@ const Parchas = () => {
     }
 
     const handleQuantityIncreased = () =>{
-        let makeInteger = parseInt(increasedProduct)
+        let makeInteger = parseInt(updatedProduct)
         getProduct = parseInt(makeInteger + 1); 
-        setIncreasedProduct(getProduct); 
+        setUpdatedProduct(getProduct);
+        let price = getProduct * 230;  
+        setTotalPrice(price); 
         if(getProduct>200){
             setQuantityError('SORRY! Out of range!'); 
-            setIncreasedProduct(200); 
+            setUpdatedProduct(200); 
             return; 
         }
     }
 
     const handleQuantityDecreased = () =>{
-        let makeInteger = parseInt(increasedProduct)
+        let makeInteger = parseInt(updatedProduct)
         getProduct = parseInt(makeInteger - 1); 
-        setIncreasedProduct(getProduct); 
+        setUpdatedProduct(getProduct); 
+        let price = getProduct * 230;  
+        setTotalPrice(price); 
         if(getProduct < 100){
             setLessQuantityError('You Must buy at least'); 
-            setIncreasedProduct(100); 
+            setUpdatedProduct(100); 
             return; 
-        }
-        
+        }     
     }
     
     const handleConfirmButton = () =>{
         const name = user?.displayName; 
         const email = user?.email; 
-        console.log(name, email, address, phone); 
+        const productName = product?.name; 
+        const orderedProduct = updatedProduct; 
+        const information = { name, email, address, phone, productName, orderedProduct, totalPrice }; 
+        const id = product?._id; 
+
+        console.log(name, email, address, phone, productName, orderedProduct, totalPrice, id); 
+
+        fetch('http://localhost:5000/addUserProduct', {
+            method: 'POST', 
+            headers: {
+                'content-type':'application/json'
+            }, 
+            body: JSON.stringify(information)
+        })
+        .then(res => res.json())
+        .then(data => {
+            setSuccess(data); 
+            toast.success('You order is successfully placed'); 
+        }); 
+
+
+        // if(success){
+        //     console.log('get success'); 
+        //     fetch(`http://localhost:5000/product/${id}`, {
+        //     method: 'PUT', 
+        //     headers: {
+        //         'content-type':'application/json'
+        //     }, 
+        //     body: JSON.stringify(updatedProduct)
+        // })
+        // .then(res => res.json())
+        // .then(data => {
+        //     console.log(data); 
+        //     toast.success('You order is successfully placed'); 
+        // })
+        // }
+
+        // if(success){
+        //     fetch(`http://localhost:5000/test/${id}`, {
+        //         method: 'PUT', 
+        //         headers: {
+        //             'content-type':'application/json'
+        //         }, 
+        //         body: JSON.stringify(100)
+        //     })
+        //     .then(res => res.json())
+        //     .then(data => {
+        //         console.log(data); 
+        //     })
+        // }
 
     }
+
+    useEffect(()=>{
+        
+    },[])
 
 
     return (
@@ -80,7 +140,7 @@ const Parchas = () => {
                     <p className='my-2'><span className='text-orange-500'>Available: </span>{product.availableQuantity}</p>
 
                     <div className='flex'>
-                    <p><span className='text-orange-500'>Get {product?.name} : </span>{increasedProduct} pitch</p>
+                    <p><span className='text-orange-500'>Get {product?.name} : </span>{updatedProduct} pitch</p>
 
                     <button onClick={handleQuantityIncreased} class="btn btn-success btn-xs ml-4 text-white">Increase</button>
                     <button onClick={handleQuantityDecreased} class="btn btn-error btn-xs ml-4 text-white">Decrease</button>
@@ -93,6 +153,9 @@ const Parchas = () => {
                     }
 
                     <p><span className='text-orange-500'>Price: </span>{product.price}$ per unit</p>
+                    {
+                        totalPrice && <p><span className='text-orange-500'>Total Price: </span>{totalPrice}$ per unit</p>
+                    }
                     </div>
                     </div>
                     <div class="card-actions justify-center">
