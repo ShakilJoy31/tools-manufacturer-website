@@ -32,8 +32,6 @@ const MyOrder = () => {
         setDeleteProduct(id);       
     } 
 
-    console.log(deleteProduct); 
-
 
     return (
         <div class="overflow-x-auto mt-12 mr-12">

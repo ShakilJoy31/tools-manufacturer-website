@@ -14,6 +14,8 @@ import MyOrder from './Components/DashBoard/MyOrder';
 import AddReview from './Components/DashBoard/AddReview';
 import MyProfile from './Components/DashBoard/MyProfile';
 import AllUsers from './Components/DashBoard/AllUsers';
+import ManageAllOrder from './Components/DashBoard/ManageAllOrder';
+import AddNewProduct from './Components/DashBoard/AddNewProduct';
 
 function App() {
   return (
@@ -39,6 +41,11 @@ function App() {
           <Route path='myprofile' element={<MyProfile></MyProfile>}></Route>
 
           <Route path='allusers' element={<AllUsers></AllUsers>}></Route>
+
+          <Route path='manageAllOrder' element={<ManageAllOrder></ManageAllOrder>}></Route>
+
+          <Route path='addProduct' element={<AddNewProduct></AddNewProduct>}></Route>
+
         </Route>
         </Route>
 

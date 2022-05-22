@@ -1,7 +1,19 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
 import { Link, Outlet } from 'react-router-dom';
+import auth from '../firebase.init';
 
 const DashBoard = () => {
+    const [user] = useAuthState(auth); 
+    const [admin, setAdmin] = useState(null); 
+    useEffect(()=>{
+        const adminEmail = user?.email; 
+        fetch(`http://localhost:5000/adminUser/${adminEmail}`)
+        .then(res => res.json())
+        .then(data => {
+            setAdmin(data); 
+        })
+    },[admin])
     return (
         <div>
 
@@ -16,11 +28,23 @@ const DashBoard = () => {
                 <div class="drawer-side">
                     <label for="my-drawer-2" class="drawer-overlay"></label>
                     <ul class="menu p-4 overflow-y-auto w-80 bg-base-100 text-base-content">
-                        <li><Link to='/dashboard'>My Orders</Link></li>
-                        <li><Link to='/dashboard/addreview'>Add A Review</Link></li>
+                        {
+                            !admin && <li><Link to='/dashboard'>My Orders</Link></li>
+                        }
+                        {
+                            !admin && <li><Link to='/dashboard/addreview'>Add A Review</Link></li>
+                        }
                         <li><Link to='/dashboard/myprofile'>My Profile</Link></li>
 
-                        <li><Link to='/dashboard/allusers'>Manage Users</Link></li>
+                        {
+                            admin && <div>
+                                <li><Link to='/dashboard/allusers'>Manage Users</Link></li>
+
+                                <li><Link to='/dashboard/manageAllOrder'>Manage All Order</Link></li>
+
+                                <li><Link to='/dashboard/addProduct'>Add a New Product</Link></li>
+                            </div> 
+                        }        
                     </ul>
 
                 </div>
