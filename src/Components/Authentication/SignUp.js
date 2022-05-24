@@ -8,12 +8,15 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useUpdateProfile } from 'react-firebase-hooks/auth';
 import auth from '../firebase.init';
 import Adduser from '../Adduser';
+import CreatingToken from './CreatingToken';
+import { useForm } from "react-hook-form";
 
 
 
 const SignUp = () => {
     const navigate = useNavigate();
     const [updateProfile] = useUpdateProfile(auth);
+    const { register, formState: { errors }, handleSubmit } = useForm();
     const [
         createUserWithEmailAndPassword,
         user,
@@ -27,7 +30,7 @@ const SignUp = () => {
 
     const [signInWithGithub, githubUser, githubLoading, githubError] = useSignInWithGithub(auth);
 
-    const handleOnSubmitButtonForSignUp = async event => {
+    const onSubmit = async event => {
         event.preventDefault();
         const name = event.target.name.value;
         const email = event.target.email.value;
@@ -35,70 +38,30 @@ const SignUp = () => {
         const confirmPassword = event.target.confirmPassword.value;
         if (password === confirmPassword) {
             await createUserWithEmailAndPassword(email, password);
-            await updateProfile({displayName: name })
-            navigate('/'); 
+            await updateProfile({ displayName: name })
+            navigate('/');
         }
     }
 
-    if(generalUser){
-        const userEmail = generalUser?.email;
-            const userName = generalUser?.displayName;
-            fetch(`http://localhost:5000/adduser/${userEmail}`, {
-                method: 'PUT',
-                headers: {
-                    'content-type': 'application/json'
-                },
-                body: JSON.stringify({ userName, userEmail })
-            })
-                .then(res => res.json())
-                .then(data => {
-                    localStorage.setItem('accessToken', data?.token)
-                })
+    if (generalUser) {
+        CreatingToken(generalUser);
     }
-    
+
     const handleSignInWithGoogle = () => {
         signInWithGoogle();
     }
 
-    if(googleUser){
-        console.log(googleUser); 
-            const userEmail = googleUser?.user?.email;
-            const userName = googleUser?.user?.displayName;
-            fetch(`http://localhost:5000/adduser/${userEmail}`, {
-                method: 'PUT',
-                headers: {
-                    'content-type': 'application/json'
-                },
-                body: JSON.stringify({ userName, userEmail })
-            })
-                .then(res => res.json())
-                .then(data => {
-                    
-                    localStorage.setItem('accessToken', data?.token)
-                    
-                })   
-        }
+    if (googleUser) {
+        CreatingToken(googleUser);
+    }
 
     const handleSignInWithGithub = () => {
         signInWithGithub();
     }
 
 
-    if(githubUser){
-        const userEmail = githubUser?.user?.email;
-    const userName = githubUser?.user?.displayName;
-    fetch(`http://localhost:5000/adduser/${userEmail}`, {
-        method: 'PUT',
-        headers: {
-            'content-type': 'application/json'
-        },
-        body: JSON.stringify({ userName, userEmail })
-    })
-        .then(res => res.json())
-        .then(data => {
-            
-            localStorage.setItem('accessToken', data?.token)
-        })
+    if (githubUser) {
+        CreatingToken(githubUser);
     }
 
 
@@ -112,15 +75,23 @@ const SignUp = () => {
                 <div class="card w-96 bg-base-100 shadow-2xl">
                     <h1 className='flex justify-center mt-8 text-4xl text-sky-400'>Sign up</h1>
                     <div class="card-body">
-                        <form onSubmit={handleOnSubmitButtonForSignUp} action="">
+                        <form onSubmit={handleSubmit(onSubmit)} action="">
                             <div>
                                 <div className='mb-2'>
-                                    <label class="label">
-                                        <span class="label-text">Your Name</span>
-                                    </label>
-                                    <input
-                                        type="text" required name='name' class="input input-bordered input-info w-full max-w-lg"
+                                    <div class="form-control w-full max-w-xs">
+                                        <label class="label">
+                                            <span class="label-text">Your name</span>
+                                        </label>
+                                        <input type="text" placeholder="Name" name='name' class="input input-bordered input-info w-full max-w-lg"
+                                        {...register("text", {
+                                            required: {
+                                                value: true,
+                                                message: 'Your name is required'
+                                            }
+                                        })}
                                     />
+                                    {errors.text?.type === 'required' && <span className='text-red-500 label-text-alt'>{errors.text.message}</span>}
+                                    </div>
                                 </div>
 
                                 <div className='mb-2'>
@@ -128,15 +99,44 @@ const SignUp = () => {
                                         <span class="label-text">Your Email</span>
                                     </label>
                                     <input
-                                        type="email" required name='email' class="input input-bordered input-info w-full max-w-lg"
+                                        type="email" name='email' class="input input-bordered input-info w-full max-w-lg"
+                                        {...register("email", {
+                                            required: {
+                                                value: true,
+                                                message: 'Email is required'
+                                            }, 
+                                            pattern:{
+                                                value: /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/,
+                                                message: 'Provide a valid email'
+                                            }
+                                        })}
                                     />
+                                    {errors.email?.type === 'required' && <span className='text-red-500 label-text-alt'>{errors.email.message}</span>}
+
+                                    {errors.email?.type === 'pattern' && <span className='text-red-500 label-text-alt'>{errors.email.message}</span>}
                                 </div>
 
                                 <div>
                                     <label class="label">
                                         <span class="label-text">Password</span>
                                     </label>
-                                    <input type="password" required name='password' class="input input-bordered input-info w-full max-w-lg" />
+                                    <input type="password" name='password' class="input input-bordered input-info w-full max-w-lg"
+                                        {...register("password", {
+                                            required: {
+                                                value: true,
+                                                message: 'Password is required'
+                                            },
+                                            minLength: {
+                                                value: 7,
+                                                message: 'Password must be 7 or longer'
+                                            }
+                                        })}
+                                    />
+                                    <label class="label">
+                                        {errors.password?.type === 'required' && <span className='text-red-500 label-text-alt'>{errors.password.message}</span>}
+
+                                        {errors.password?.type === 'minLength' && <span className='text-red-500 label-text-alt'>{errors.password.message}</span>}
+                                    </label>
                                 </div>
 
 
@@ -144,7 +144,7 @@ const SignUp = () => {
                                     <label class="label">
                                         <span class="label-text">Confirm Password</span>
                                     </label>
-                                    <input type="password" required name='confirmPassword' class="input input-bordered input-info w-full max-w-lg" />
+                                    <input type="password" name='confirmPassword' class="input input-bordered input-info w-full max-w-lg" />
                                 </div>
 
                                 {

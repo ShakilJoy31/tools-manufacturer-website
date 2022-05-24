@@ -9,9 +9,11 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useLocation } from 'react-router-dom';
 import auth from '../firebase.init';
 import Loading from '../Shared/Loading';
+import CreatingToken from './CreatingToken';
+import { useForm } from "react-hook-form";
 
 const Login = () => {
-
+    const { register, formState: { errors }, handleSubmit } = useForm();
     const navigate = useNavigate();
     const location = useLocation();
     const from = location?.state?.from?.pathname || '/';
@@ -31,7 +33,7 @@ const Login = () => {
 
     const [signInWithGithub, githubUser, githubLoading, githubError] = useSignInWithGithub(auth);
 
-    const handleOnSubmitButtonForSignUp = event => {
+    const onSubmit = event => {
         event.preventDefault();
         const email = event.target.email.value;
         const password = event.target.password.value;
@@ -55,51 +57,15 @@ const Login = () => {
     }
 
     if(generalUser){
-        const userEmail = generalUser?.email;
-            const userName = generalUser?.displayName;
-            fetch(`http://localhost:5000/adduser/${userEmail}`, {
-                method: 'PUT',
-                headers: {
-                    'content-type': 'application/json'
-                },
-                body: JSON.stringify({ userName, userEmail })
-            })
-                .then(res => res.json())
-                .then(data => {
-                    localStorage.setItem('accessToken', data?.token)
-                })
+        CreatingToken(generalUser); 
     }
 
     if(googleUser){
-        const userEmail = googleUser?.user?.email;
-        const userName = googleUser?.user?.displayName;
-        fetch(`http://localhost:5000/adduser/${userEmail}`, {
-            method: 'PUT',
-            headers: {
-                'content-type': 'application/json'
-            },
-            body: JSON.stringify({ userName, userEmail })
-        })
-            .then(res => res.json())
-            .then(data => {
-                localStorage.setItem('accessToken', data?.token)
-            })   
+        CreatingToken(googleUser); 
     }
 
     if(githubUser){
-    const userEmail = githubUser?.user?.email;
-    const userName = githubUser?.user?.displayName;
-    fetch(`http://localhost:5000/adduser/${userEmail}`, {
-        method: 'PUT',
-        headers: {
-            'content-type': 'application/json'
-        },
-        body: JSON.stringify({ userName, userEmail })
-    })
-        .then(res => res.json())
-        .then(data => {
-            localStorage.setItem('accessToken', data?.token)
-        })
+        CreatingToken(githubUser);
     }
 
     return (
@@ -108,21 +74,51 @@ const Login = () => {
                 <div class="card w-96 bg-base-100 shadow-2xl">
                     <h1 className='flex justify-center mt-8 text-4xl text-sky-400'>Log in</h1>
                     <div class="card-body">
-                        <form onSubmit={handleOnSubmitButtonForSignUp} action="">
+                        <form onSubmit={handleSubmit(onSubmit)} action="">
                             <div>
-                                <div className='mb-2'>
+                            <div className='mb-2'>
                                     <label class="label">
                                         <span class="label-text">Your Email</span>
                                     </label>
                                     <input
-                                        type="text" required name='email' class="input input-bordered input-info w-full max-w-lg" />
+                                        type="email" name='email' class="input input-bordered input-info w-full max-w-lg"
+                                        {...register("email", {
+                                            required: {
+                                                value: true,
+                                                message: 'Email is required'
+                                            }, 
+                                            pattern:{
+                                                value: /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/,
+                                                message: 'Provide a valid email'
+                                            }
+                                        })}
+                                    />
+                                    {errors.email?.type === 'required' && <span className='text-red-500 label-text-alt'>{errors.email.message}</span>}
+
+                                    {errors.email?.type === 'pattern' && <span className='text-red-500 label-text-alt'>{errors.email.message}</span>}
                                 </div>
 
                                 <div>
                                     <label class="label">
                                         <span class="label-text">Password</span>
                                     </label>
-                                    <input type="password" required name='password' class="input input-bordered input-info w-full max-w-lg" />
+                                    <input type="password" name='password' class="input input-bordered input-info w-full max-w-lg"
+                                        {...register("password", {
+                                            required: {
+                                                value: true,
+                                                message: 'Password is required'
+                                            },
+                                            minLength: {
+                                                value: 7,
+                                                message: 'Password must be 7 or longer'
+                                            }
+                                        })}
+                                    />
+                                    <label class="label">
+                                        {errors.password?.type === 'required' && <span className='text-red-500 label-text-alt'>{errors.password.message}</span>}
+
+                                        {errors.password?.type === 'minLength' && <span className='text-red-500 label-text-alt'>{errors.password.message}</span>}
+                                    </label>
                                 </div>
 
 
