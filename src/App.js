@@ -21,6 +21,7 @@ import Blog from './Components/Blog/Blog';
 import NotFound from './Components/NotFound/NotFound';
 import MyPortfolio from './Components/MyPortfolio/MyPortfolio';
 import Prebook from './Components/Home/Prebook';
+import AllProduct from './Components/DashBoard/AllProduct';
 
 function App() {
   return (
@@ -50,6 +51,8 @@ function App() {
           <Route path='manageAllOrder' element={<ManageAllOrder></ManageAllOrder>}></Route>
 
           <Route path='addProduct' element={<AddNewProduct></AddNewProduct>}></Route>
+
+          <Route path='allProductForAdmin' element={<AllProduct></AllProduct>}></Route>
 
         </Route>
         </Route>
