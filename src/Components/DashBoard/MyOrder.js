@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
+import { useNavigate } from 'react-router-dom';
 import auth from '../firebase.init';
 import Loading from '../Shared/Loading';
 
@@ -7,6 +8,7 @@ const MyOrder = () => {
     const [user] = useAuthState(auth);
     const [productsInfo, setProductInfo] = useState([]);
     const [deleteProduct, setDeleteProduct] = useState(null);
+    const navigate = useNavigate(); 
     useEffect(() => {
         fetch(`http://localhost:5000/getOrderedProducts/${user?.email}`)
             .then(res => res.json())
@@ -31,6 +33,11 @@ const MyOrder = () => {
     const handleCancelOrder = (id) =>{
         setDeleteProduct(id);       
     } 
+
+    const handlePayment = (id) =>{
+        navigate(`/payment/${id}`)
+        console.log(id); 
+    }
 
 
     return (
@@ -63,7 +70,7 @@ const MyOrder = () => {
                         <label onClick={()=>handleCancelOrder(productInfo._id)} for="my-modal-3" class="btn modal-button btn-sm modal-button">Cancel Order</label>  
 
                         </td>
-                        <td><button class="btn btn-sm">Let me Pay</button></td>
+                        <td><button onClick={()=>handlePayment(productInfo._id)} class="btn btn-sm">Let me Pay</button></td>
                     </tr>
                 </tbody>
                     )

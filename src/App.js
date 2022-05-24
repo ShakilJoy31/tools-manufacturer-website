@@ -16,6 +16,11 @@ import MyProfile from './Components/DashBoard/MyProfile';
 import AllUsers from './Components/DashBoard/AllUsers';
 import ManageAllOrder from './Components/DashBoard/ManageAllOrder';
 import AddNewProduct from './Components/DashBoard/AddNewProduct';
+import Payment from './Components/DashBoard/Payment';
+import Blog from './Components/Blog/Blog';
+import NotFound from './Components/NotFound/NotFound';
+import MyPortfolio from './Components/MyPortfolio/MyPortfolio';
+import Prebook from './Components/Home/Prebook';
 
 function App() {
   return (
@@ -48,6 +53,15 @@ function App() {
 
         </Route>
         </Route>
+        <Route path='/payment/:id' element={<Payment></Payment>}></Route>
+
+        <Route path='/blog' element={<Blog></Blog>}></Route>
+
+        <Route path='/myPortfolio' element={<MyPortfolio></MyPortfolio>}></Route>
+
+        <Route path='/preebook' element={<Prebook></Prebook>}></Route>
+
+        <Route path='*' element={<NotFound></NotFound>}></Route>
 
       </Routes>
 

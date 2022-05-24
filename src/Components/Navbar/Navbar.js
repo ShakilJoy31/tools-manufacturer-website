@@ -10,7 +10,9 @@ const Navbar = () => {
         signOut(auth);
     }
     const navBarElements = <>
-        <li className='text-2xl flex justify-center items-center'><Link to='/'>BLog</Link></li>
+        <li className='text-2xl flex justify-center items-center'><Link to='/blog'>BLog</Link></li>
+
+        <li className='text-2xl flex justify-center items-center'><Link to='/myPortfolio'>My Portfolio</Link></li>
         {
             generalUser && <li className='text-2xl flex justify-center items-center'><Link to='/dashboard'>Dash board</Link></li>
         }
@@ -24,6 +26,7 @@ const Navbar = () => {
                 : <li className='text-2xl flex justify-center items-center'><Link to='/login'>Log in</Link></li>
         }
 
+       
 
     </>
     return (
@@ -40,14 +43,10 @@ const Navbar = () => {
                     </div>
                     <div className='flex'>
                         <Link to='/' class="btn btn-ghost normal-case text-3xl text-violet-600">Tools Manufacturer</Link>
-                            <label for="my-drawer-2" class="btn btn-primary bg-blue-400 drawer-button btn-ghost btn-circle lg:hidden flex justify-center items-center" tabindex="0">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" /></svg>
-                            </label>
+                        <label for="my-drawer-2" class="btn btn-primary bg-blue-400 drawer-button btn-ghost btn-circle lg:hidden flex justify-center items-center" tabindex="0">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" /></svg>
+                        </label>
                     </div>
-
-
-
-
                 </div>
                 <div class="navbar-center hidden lg:flex">
                     <ul class="menu menu-horizontal p-0">

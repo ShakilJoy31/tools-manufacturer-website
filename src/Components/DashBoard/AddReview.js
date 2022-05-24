@@ -6,6 +6,8 @@ const AddReview = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [review, setRewiew] = useState('');
+    const [ratings, setRatings] = useState('');
+    const [img, setImg] = useState('');
     
 
     const handleGetEmail = (event) =>{
@@ -20,8 +22,16 @@ const AddReview = () => {
         setRewiew(event.target.value); 
     }
 
+    const handleGetRatings = (event) =>{
+        setRatings(event.target.value); 
+    }
+
+    const handleGetPicture = (event) =>{
+        setImg(event.target.value); 
+    }
+
     const handleSubmitButton = () =>{
-        const userReview = { name, email, review };
+        const userReview = { name, email, ratings, img, review };
         console.log(userReview);  
         fetch('http://localhost:5000/review', {
             method: 'POST', 
@@ -60,6 +70,20 @@ const AddReview = () => {
             <span class="label-text">Email</span>
           </label>
           <input onBlur={handleGetEmail} type="text" placeholder="email" class="input input-bordered" />
+        </div>
+
+        <div class="form-control">
+          <label class="label">
+            <span class="label-text">Ratings</span>
+          </label>
+          <input onBlur={handleGetRatings} type="text" placeholder="Ratings" class="input input-bordered" />
+        </div>
+
+        <div class="form-control">
+          <label class="label">
+            <span class="label-text">Picture</span>
+          </label>
+          <input onBlur={handleGetPicture} type="text" placeholder="Link of picture" class="input input-bordered" />
         </div>
         
 
