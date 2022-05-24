@@ -1,10 +1,16 @@
 import React, { useEffect, useState } from 'react';
+import Loading from '../Shared/Loading';
 
 const AllProduct = () => {
     const [allProduct, setAllProduct] = useState([]);
     const [deletedId, setDeletedId] = useState(null);
     useEffect(() => {
-        fetch('http://localhost:5000/allProductForAdmin')
+        fetch('http://localhost:5000/allProductForAdmin', {
+            method: 'GET',
+            headers: {
+                'authorization': `Bearer ${localStorage.getItem('accessToken')}`
+            }
+        })
             .then(res => res.json())
             .then(data => setAllProduct(data))
     }, [])
@@ -12,8 +18,6 @@ const AllProduct = () => {
     const handleRemoveProduct = (id) => {
         setDeletedId(id);
     }
-
-    console.log(deletedId); 
 
     const handleDeleteFromDB = () => {
         fetch(`http://localhost:5000/deleteProduct/${deletedId}`, {
@@ -25,6 +29,10 @@ const AllProduct = () => {
             setAllProduct(restProduct); 
             console.log(data); 
         })
+    }
+
+    if(!allProduct){
+        return <Loading></Loading>
     }
 
 
@@ -46,7 +54,7 @@ const AllProduct = () => {
                         </tr>
                     </thead>
                     {
-                        allProduct.map((product, index) => <tbody>
+                        allProduct?.map((product, index) => <tbody>
                             <tr>
                                 <th>{index + 1}</th>
 

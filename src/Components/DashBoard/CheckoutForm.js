@@ -7,29 +7,27 @@ const CheckoutForm = ({product}) => {
     const [cardError, setCardError] = useState('');
     const [clientSecret, setClientSecret] = useState('');
 
+    console.log(product)
 
-
-    const {price} = product; 
+    const {totalPrice} = product;  
 
     useEffect(()=>{
-        if(price){
+        if(totalPrice){
         fetch('http://localhost:5000/create-payment-intent', {
             method: 'POST', 
             headers: {
                 'content-type':'application/json'
             },
-            body: JSON.stringify({price})
+            body: JSON.stringify({totalPrice})
         })
         .then(res => res.json())
-        .then(data => {
-            console.log(data?.clientSecret); 
+        .then(data => {      
             if(data){
-                console.log(data); 
                 setClientSecret(data?.clientSecret)
             }
         })
     }
-    },[price])
+    },[totalPrice])
 
 
 
