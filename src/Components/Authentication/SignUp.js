@@ -55,17 +55,17 @@ const SignUp = () => {
             })
                 .then(res => res.json())
                 .then(data => {
-                    console.log(data);
+                    console.log(data); 
+                    localStorage.setItem('accessToken', data?.token)
                 })
     }
-
-    console.log(generalUser); 
     
     const handleSignInWithGoogle = () => {
         signInWithGoogle();
     }
 
     if(googleUser){
+        console.log(googleUser); 
             const userEmail = googleUser?.user?.email;
             const userName = googleUser?.user?.displayName;
             fetch(`http://localhost:5000/adduser/${userEmail}`, {
@@ -77,7 +77,9 @@ const SignUp = () => {
             })
                 .then(res => res.json())
                 .then(data => {
-                    console.log(data);
+                    console.log(data); 
+                    localStorage.setItem('accessToken', data?.token)
+                    
                 })   
         }
 
@@ -98,7 +100,8 @@ const SignUp = () => {
     })
         .then(res => res.json())
         .then(data => {
-            console.log(data);
+            console.log(data); 
+            localStorage.setItem('accessToken', data?.token)
         })
     }
 

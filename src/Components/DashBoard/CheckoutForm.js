@@ -7,9 +7,12 @@ const CheckoutForm = ({product}) => {
     const [cardError, setCardError] = useState('');
     const [clientSecret, setClientSecret] = useState('');
 
+
+
     const {price} = product; 
 
     useEffect(()=>{
+        if(price){
         fetch('http://localhost:5000/create-payment-intent', {
             method: 'POST', 
             headers: {
@@ -25,6 +28,7 @@ const CheckoutForm = ({product}) => {
                 setClientSecret(data?.clientSecret)
             }
         })
+    }
     },[price])
 
 
@@ -88,7 +92,7 @@ const CheckoutForm = ({product}) => {
             />
             <div class="form-control mt-6">
                 <p className='text-red-600 flex justify-center mb-2'>{cardError}</p>
-                <button disabled={!stripe} type="submit" class="btn btn-primary text-xl">Complete Payment</button>
+                <button disabled={!stripe || !clientSecret} type="submit" class="btn btn-primary text-xl">Complete Payment</button>
             </div>
         </form>
     );

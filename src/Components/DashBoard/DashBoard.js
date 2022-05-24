@@ -8,12 +8,16 @@ const DashBoard = () => {
     const [admin, setAdmin] = useState(null); 
     useEffect(()=>{
         const adminEmail = user?.email; 
-        fetch(`http://localhost:5000/adminUser/${adminEmail}`)
+        if(adminEmail){
+            fetch(`http://localhost:5000/adminUser/${adminEmail}`)
         .then(res => res.json())
         .then(data => {
             setAdmin(data); 
         })
+        }
+        
     },[admin])
+
     return (
         <div>
 

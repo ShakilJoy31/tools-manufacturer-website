@@ -10,14 +10,13 @@ const AllUsers = () => {
     .then(res => res.json()))
 
 
-    console.log(data); 
-
-    const handlemakeAdmi = (email) =>{
+    const handlemakeAdmin = (email) =>{
         const requesterEmail = user?.email; 
         fetch(`http://localhost:5000/user/admin/${email}`, {
             method: 'PUT',
             headers: {
-                'content-type':'application/json'
+                'content-type':'application/json',
+                'authorization': `Bearer ${localStorage.getItem('accessToken')}`
             }, 
             body: JSON.stringify({requester: requesterEmail})
         })
@@ -27,6 +26,7 @@ const AllUsers = () => {
             refetch(); 
         })
     }
+
 
     if(isLoading){
         return <Loading></Loading>
@@ -57,7 +57,7 @@ const AllUsers = () => {
                             }
 
                             {
-                                user.act ? <td>{''}</td> : <td><button onClick={()=>handlemakeAdmi(user?.email)} class="btn btn-sm">Make Admin</button></td>
+                                user.act ? <td>{''}</td> : <td><button onClick={()=>handlemakeAdmin(user?.email)} class="btn btn-sm">Make Admin</button></td>
                             }
                             
                         </tr>

@@ -25,7 +25,7 @@ import AllProduct from './Components/DashBoard/AllProduct';
 
 function App() {
   return (
-    <div>
+    <div className='bg-sky-100'>
       <Navbar></Navbar>
       <Routes>
         <Route path='/' element={<Home></Home>}></Route>

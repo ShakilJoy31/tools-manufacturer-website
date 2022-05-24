@@ -8,6 +8,7 @@ const Navbar = () => {
     const [generalUser] = useAuthState(auth);
     const handleLogOut = () => {
         signOut(auth);
+        localStorage.removeItem('accessToken'); 
     }
     const navBarElements = <>
         <li className='text-2xl flex justify-center items-center'><Link to='/blog'>BLog</Link></li>

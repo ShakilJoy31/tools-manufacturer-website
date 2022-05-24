@@ -1,3 +1,4 @@
+import { signOut } from 'firebase/auth';
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useNavigate } from 'react-router-dom';
@@ -8,35 +9,58 @@ const MyOrder = () => {
     const [user] = useAuthState(auth);
     const [productsInfo, setProductInfo] = useState([]);
     const [deleteProduct, setDeleteProduct] = useState(null);
-    const navigate = useNavigate(); 
+
+    const [tokenError, setTokenError] = useState('');
+    const navigate = useNavigate();
+    const email = user?.email; 
     useEffect(() => {
-        fetch(`http://localhost:5000/getOrderedProducts/${user?.email}`)
-            .then(res => res.json())
+        if(email){
+            fetch(`http://localhost:5000/getOrderedProducts/${email}`, {
+            method: 'GET',
+            headers: {
+                'authorization': `Bearer ${localStorage.getItem('accessToken')}`
+            }
+        })
+            .then(res => {
+                if (res?.status !== 200) {
+                    setTokenError(res?.statusText)
+                    return;
+                }
+                return res.json()
+            })
             .then(data => setProductInfo(data));
+        }
     }, [productsInfo])
 
-    if(!productsInfo){
-        return <Loading></Loading>
+    if (!productsInfo || tokenError) {
+        return <Loading></Loading> 
     }
 
-    const handleDeleteProduct = () =>{
+    if (tokenError) {
+        return <div>
+            <p className='text-4xl flex justify-center text-red-500'>{tokenError}</p>
+            <Loading></Loading>
+        </div>
+    }
+
+    const handleDeleteProduct = () => {
         fetch(`http://localhost:5000/deleteProduct/${deleteProduct}`, {
-            method:'DELETE', 
+            method: 'DELETE',
         })
-        .then(res => res.json())
-        .then(data => {
-            const rest = productsInfo.filter(product => product._id !== deleteProduct); 
-            setProductInfo(rest); 
-        })
+            .then(res => res.json())
+            .then(data => {
+                const rest = productsInfo.filter(product => product._id !== deleteProduct);
+                setProductInfo(rest);
+            })
     }
 
-    const handleCancelOrder = (id) =>{
-        setDeleteProduct(id);       
-    } 
+    const handleCancelOrder = (id) => {
+        setDeleteProduct(id);
+    }
 
-    const handlePayment = (id) =>{
+    const handlePayment = (id) => {
         navigate(`/payment/${id}`)
-        console.log(id); 
+        console.log(id);
     }
 
 
@@ -56,41 +80,41 @@ const MyOrder = () => {
                     </tr>
                 </thead>
                 {
-                    productsInfo?.map((productInfo, index) => 
+                    productsInfo?.map((productInfo, index) =>
                         <tbody>
-                    <tr>
-                        <th>{index + 1}</th>
-                        <td>{productInfo.name}</td>
-                        <td>{productInfo.address}</td>
-                        <td>{productInfo.productName}</td>
-                        <td>{productInfo.orderedProduct}</td>
-                        <td>{productInfo.totalPrice}</td>
+                            <tr>
+                                <th>{index + 1}</th>
+                                <td>{productInfo.name}</td>
+                                <td>{productInfo.address}</td>
+                                <td>{productInfo.productName}</td>
+                                <td>{productInfo.orderedProduct}</td>
+                                <td>{productInfo.totalPrice}</td>
 
-                        <td>
-                        <label onClick={()=>handleCancelOrder(productInfo._id)} for="my-modal-3" class="btn modal-button btn-sm modal-button">Cancel Order</label>  
+                                <td>
+                                    <label onClick={() => handleCancelOrder(productInfo._id)} for="my-modal-3" class="btn modal-button btn-sm modal-button">Cancel Order</label>
 
-                        </td>
-                        <td><button onClick={()=>handlePayment(productInfo._id)} class="btn btn-sm">Let me Pay</button></td>
-                    </tr>
-                </tbody>
+                                </td>
+                                <td><button onClick={() => handlePayment(productInfo._id)} class="btn btn-sm">Let me Pay</button></td>
+                            </tr>
+                        </tbody>
                     )
                 }
             </table>
 
             <div>
-            <input type="checkbox" id="my-modal-3" class="modal-toggle" />
-            <div class="modal">
-                <div class="modal-box relative">
-                    <label for="my-modal-3" class="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
-                    <h3 class="text-2xl font-bold block mx-auto">Are your sure you want to delete?</h3>
-                    <p class="py-4 text-xl">Once you confirm it will be deleted permanently.</p>
+                <input type="checkbox" id="my-modal-3" class="modal-toggle" />
+                <div class="modal">
+                    <div class="modal-box relative">
+                        <label for="my-modal-3" class="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
+                        <h3 class="text-2xl font-bold block mx-auto">Are your sure you want to delete?</h3>
+                        <p class="py-4 text-xl">Once you confirm it will be deleted permanently.</p>
 
-                    <p class="py-2 flex justify-center text-red-600 text-2xl">So Be Careful!</p>
+                        <p class="py-2 flex justify-center text-red-600 text-2xl">So Be Careful!</p>
 
-                    <label onClick={handleDeleteProduct} for="my-modal-3" class="btn btn-outline btn-error block mx-auto my-2 w-64"> <span className='text-2xl'>Confirm Delete</span> </label>
+                        <label onClick={handleDeleteProduct} for="my-modal-3" class="btn btn-outline btn-error block mx-auto my-2 w-64"> <span className='text-2xl'>Confirm Delete</span> </label>
+                    </div>
                 </div>
             </div>
-        </div>
         </div>
     );
 };
