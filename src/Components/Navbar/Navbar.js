@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import auth from '../firebase.init';
 import { signOut } from 'firebase/auth';
+import Loading from '../Shared/Loading';
 
 const Navbar = () => {
     const [generalUser] = useAuthState(auth);
@@ -10,7 +11,7 @@ const Navbar = () => {
         signOut(auth);
         localStorage.removeItem('accessToken'); 
     }
-    const navBarElements = <>
+        const navBarElements = <>
         <li className='text-2xl flex justify-center items-center'><Link to='/blog'>BLog</Link></li>
 
         <li className='text-2xl flex justify-center items-center'><Link to='/myPortfolio'>My Portfolio</Link></li>
@@ -26,10 +27,9 @@ const Navbar = () => {
             </div>
                 : <li className='text-2xl flex justify-center items-center'><Link to='/login'>Log in</Link></li>
         }
-
-       
-
     </>
+     
+
     return (
         <div>
             <div class="navbar bg-base-100 flex justify-between">

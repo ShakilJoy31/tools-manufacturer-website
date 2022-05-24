@@ -12,28 +12,28 @@ const MyOrder = () => {
 
     const [tokenError, setTokenError] = useState('');
     const navigate = useNavigate();
-    const email = user?.email; 
+    const email = user?.email;
     useEffect(() => {
-        if(email){
+        if (email) {
             fetch(`http://localhost:5000/getOrderedProducts/${email}`, {
-            method: 'GET',
-            headers: {
-                'authorization': `Bearer ${localStorage.getItem('accessToken')}`
-            }
-        })
-            .then(res => {
-                if (res?.status !== 200) {
-                    setTokenError(res?.statusText)
-                    return;
+                method: 'GET',
+                headers: {
+                    'authorization': `Bearer ${localStorage.getItem('accessToken')}`
                 }
-                return res.json()
             })
-            .then(data => setProductInfo(data));
+                .then(res => {
+                    if (res?.status !== 200) {
+                        setTokenError(res?.statusText)
+                        return;
+                    }
+                    return res.json()
+                })
+                .then(data => setProductInfo(data));
         }
     }, [productsInfo])
 
     if (!productsInfo || tokenError) {
-        return <Loading></Loading> 
+        return <Loading></Loading>
     }
 
     if (tokenError) {
@@ -54,13 +54,14 @@ const MyOrder = () => {
             })
     }
 
+
+
     const handleCancelOrder = (id) => {
         setDeleteProduct(id);
     }
 
     const handlePayment = (id) => {
         navigate(`/payment/${id}`)
-        console.log(id);
     }
 
 
@@ -91,10 +92,13 @@ const MyOrder = () => {
                                 <td>{productInfo.totalPrice}</td>
 
                                 <td>
-                                    <label onClick={() => handleCancelOrder(productInfo._id)} for="my-modal-3" class="btn modal-button btn-sm modal-button">Cancel Order</label>
-
+                                    {
+                                        !productInfo?.paymentStatus && <label onClick={() => handleCancelOrder(productInfo._id)} for="my-modal-3" class="btn modal-button btn-sm modal-button">Cancel Order</label>
+                                    }
                                 </td>
-                                <td><button onClick={() => handlePayment(productInfo._id)} class="btn btn-sm">Let me Pay</button></td>
+                                {
+                                    productInfo?.paymentStatus ?<td><button class="btn btn-sm">Paid</button></td> : <td><button onClick={() => handlePayment(productInfo._id)} class="btn btn-sm">Let me Pay</button></td> 
+                                }
                             </tr>
                         </tbody>
                     )

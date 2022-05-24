@@ -87,7 +87,7 @@ const Login = () => {
     }
 
     if(githubUser){
-        const userEmail = githubUser?.user?.email;
+    const userEmail = githubUser?.user?.email;
     const userName = githubUser?.user?.displayName;
     fetch(`http://localhost:5000/adduser/${userEmail}`, {
         method: 'PUT',

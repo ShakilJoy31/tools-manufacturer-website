@@ -23,10 +23,6 @@ const SignUp = () => {
 
     const [generalUser] = useAuthState(auth);
 
-    const AddUserToDatabase = () =>{
-        
-    }
-
     const [signInWithGoogle, googleUser, googleLoading, googleError] = useSignInWithGoogle(auth);
 
     const [signInWithGithub, githubUser, githubLoading, githubError] = useSignInWithGithub(auth);
@@ -39,7 +35,8 @@ const SignUp = () => {
         const confirmPassword = event.target.confirmPassword.value;
         if (password === confirmPassword) {
             await createUserWithEmailAndPassword(email, password);
-            await updateProfile({ displayName: name })
+            await updateProfile({displayName: name })
+            navigate('/'); 
         }
     }
 
@@ -55,7 +52,6 @@ const SignUp = () => {
             })
                 .then(res => res.json())
                 .then(data => {
-                    console.log(data); 
                     localStorage.setItem('accessToken', data?.token)
                 })
     }
@@ -77,7 +73,7 @@ const SignUp = () => {
             })
                 .then(res => res.json())
                 .then(data => {
-                    console.log(data); 
+                    
                     localStorage.setItem('accessToken', data?.token)
                     
                 })   
@@ -100,7 +96,7 @@ const SignUp = () => {
     })
         .then(res => res.json())
         .then(data => {
-            console.log(data); 
+            
             localStorage.setItem('accessToken', data?.token)
         })
     }

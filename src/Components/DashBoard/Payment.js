@@ -16,9 +16,6 @@ const Payment = () => {
             .then(data => setProduct(data))
     }, [])
 
-    // useEffect(() => {
-    //     setUpdatedProduct(product?.availableQuantity - 50)
-    // }, [product?.availableQuantity])
     const [user] = useAuthState(auth);
 
 
@@ -40,8 +37,6 @@ const Payment = () => {
                                     <p className='text-2xl'><span className='text-orange-500'>Price: </span>{product.price}$ per unit</p>
 
                                     <p className='my-2 text-2xl'><span className='text-orange-500'>Price You need to Pay:  </span>{product.totalPrice}$</p>
-
-
                                 </div>
                             </div>
                         </div>
