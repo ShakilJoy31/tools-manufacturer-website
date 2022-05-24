@@ -42,12 +42,15 @@ const Parchas = () => {
     let makeInteger = parseInt(updatedProduct)
     getProduct = parseInt(makeInteger + 1);
     setUpdatedProduct(getProduct);
-    let price = getProduct * 230;
+    let price = getProduct * product?.price;
     setTotalPrice(price);
-    if (getProduct > 200) {
+    if (getProduct > product?.availableQuantity) { 
       setQuantityError('SORRY! Out of range!');
-      setUpdatedProduct(200);
+      setUpdatedProduct(product?.availableQuantity);
       return;
+    }
+    else{
+      setLessQuantityError('');
     }
   }
 
@@ -55,12 +58,15 @@ const Parchas = () => {
     let makeInteger = parseInt(updatedProduct)
     getProduct = parseInt(makeInteger - 1);
     setUpdatedProduct(getProduct);
-    let price = getProduct * 230;
+    let price = getProduct * product?.price;
     setTotalPrice(price);
-    if (getProduct < 100) {
+    if (getProduct < product?.minimumOrder) {
       setLessQuantityError('You Must buy at least');
-      setUpdatedProduct(100);
+      setUpdatedProduct(product?.minimumOrder);
       return;
+    }
+    else{
+      setQuantityError('')
     }
   }
 
@@ -111,7 +117,7 @@ const Parchas = () => {
                 <div>
                   <h2 class="card-title"> <span className='text-orange-500'>Name: </span> {product.name}</h2>
                   <p className='my-2'><span className='text-orange-500'>Description: </span>{product.description}</p>
-                  <p><span className='text-orange-500'>Minimum Order: </span>{product.minimumOrder}</p>
+                  <p><span className='text-orange-500'>Minimum Order: </span>{product?.minimumOrder}</p>
                   <p className='my-2'><span className='text-orange-500'>Available: </span>{product.availableQuantity}</p>
 
                   <div className='flex'>
@@ -132,9 +138,6 @@ const Parchas = () => {
                     totalPrice && <p><span className='text-orange-500'>Total Price: </span>{totalPrice}$ per unit</p>
                   }
                 </div>
-              </div>
-              <div class="card-actions justify-center">
-                <button class="btn btn-outline btn-accent w-64">Place Order</button>
               </div>
             </div>
           </div>
@@ -165,7 +168,7 @@ const Parchas = () => {
               <input onBlur={getPhoneNumber} type="text" placeholder="Phone number" class="input input-bordered" />
             </div>
             <div class="form-control mt-6">
-              <button onClick={handleConfirmButton} class="btn btn-primary">Confirm This Order</button>
+              <button disabled={lessQuantity || quantityError} onClick={handleConfirmButton} class="btn btn-primary">Confirm This Order</button>
             </div>
           </div>
         </div>
