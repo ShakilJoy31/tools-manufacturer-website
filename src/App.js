@@ -22,10 +22,12 @@ import NotFound from './Components/NotFound/NotFound';
 import MyPortfolio from './Components/MyPortfolio/MyPortfolio';
 import Prebook from './Components/Home/Prebook';
 import AllProduct from './Components/DashBoard/AllProduct';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import auth from './Components/firebase.init';
 
 function App() {
   return (
-    <div className='bg-sky-100'>
+    <div className='bg-sky-100 sm:w-full xs:w-full'>
       <Navbar></Navbar>
       <Routes>
         <Route path='/' element={<Home></Home>}></Route>
@@ -40,6 +42,7 @@ function App() {
 
         <Route>
           <Route path='/dashboard' element={<DashBoard></DashBoard>}>
+
           <Route index element={<MyOrder></MyOrder>}></Route>
 
           <Route path='addreview' element={<AddReview></AddReview>}></Route>

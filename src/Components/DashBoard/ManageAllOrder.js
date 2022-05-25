@@ -3,6 +3,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import auth from '../firebase.init';
 
 const ManageAllOrder = () => {
+    const [unauthorized, setUnAuth] = useState('');
     const [user] = useAuthState(auth);
     const [products, setProduct] = useState([]);
     const [id, setId] = useState(null);
@@ -15,12 +16,21 @@ const ManageAllOrder = () => {
                 'authorization': `Bearer ${localStorage.getItem('accessToken')}`
             }
         })
-            .then(res => res.json())
+            .then(res => {
+                if(res.status !== 200){
+                    setUnAuth('You are Un Authorized or not an Admin!!!'); 
+                    return; 
+                }
+                return res.json()
+            })
             .then(data => setProduct(data))
     }, [])
 
-    console.log(products);
-
+    // if(products?.message === 'Un Authorized'){
+    //     console.log('inside'); 
+    //     setUnAuth('You are Un Authorized or not an Admin!!!'); 
+    //     return; 
+    // }
     const handleDeleteButton = (id) =>{
         setId(id); 
     }
@@ -55,7 +65,7 @@ const ManageAllOrder = () => {
                     </thead>
 
                     {
-                        products.map((product, index) => <tbody>
+                        products?.map((product, index) => <tbody>
                             <tr>
                                 <th>{index + 1}</th>
                                 <td>{product?.name}</td>
@@ -86,7 +96,7 @@ const ManageAllOrder = () => {
                             <label for="my-modal-3" class="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
                             <h3 class="text-2xl flex justify-center text-blue-500">Do you want to delete?</h3>
                             <p class="py-4 text-xl flex justify-center text-blue-500">If you confirm, it will be deleted permanently. </p>
-                            <p className="py-4 text-3xl flex justify-center text-red-500">So be careful!</p>
+                            <p className="flex justify-center py-4 text-3xl text-red-500">So be careful!</p>
                             <label onClick={handleDeleteFromDB} for="my-modal-3" class="btn btn-outline btn-error block mx-auto w-84"><span className='text-3xl'>Confirm Delete</span></label>
                         </div>
                 </div>
@@ -95,6 +105,9 @@ const ManageAllOrder = () => {
                 }
         </div>
         </div>
+        {
+                unauthorized && <h1 className='flex justify-center mt-8 text-5xl text-red-600'>{unauthorized}</h1>
+            }
         </div>
     );
 };

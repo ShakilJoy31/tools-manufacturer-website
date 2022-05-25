@@ -1,3 +1,20 @@
+# Website Name: 
+--> tool Manufacturer
+
+# Live site link 
+--> 
+
+# website's features and functionality.
+--> React Query 
+--> Data loaded from server (mongodb)
+--> Tailwind(CSS framework) and DaiusyUI component. 
+--> Authentication(for login and sign up)
+-->React Query
+--> Different look at Dashboard for admin and non admin
+
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthState, useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { useSignInWithGoogle } from 'react-firebase-hooks/auth';
@@ -10,12 +10,15 @@ import auth from '../firebase.init';
 import Adduser from '../Adduser';
 import CreatingToken from './CreatingToken';
 import { useForm } from "react-hook-form";
+import Loading from '../Shared/Loading';
+import Navbar from '../Navbar/Navbar';
 
 
 
 const SignUp = () => {
     const navigate = useNavigate();
-    const [updateProfile] = useUpdateProfile(auth);
+    const [updateProfile, updating, updatingNameError] = useUpdateProfile(auth);
+    const [name, setName] = useState('')
     const { register, formState: { errors }, handleSubmit } = useForm();
     const [
         createUserWithEmailAndPassword,
@@ -35,28 +38,28 @@ const SignUp = () => {
         const email = event.email;
         const password = event.password;
         const confirmPassword = event.confirmPassword;
-        console.log(typeof password);
-        console.log(typeof confirmPassword);
+        setName(name);
         if (password === confirmPassword) {
             await createUserWithEmailAndPassword(email, password);
             await updateProfile({ displayName: name })
             navigate('/');
         }
-        return false; 
     }
 
-    console.log(generalUser); 
-    
-    if (generalUser) {
-        CreatingToken(generalUser);
+
+    if (generalUser && name) {
+        CreatingToken(generalUser, name);
     }
 
     const handleSignInWithGoogle = () => {
         signInWithGoogle();
     }
 
+
     if (googleUser) {
-        CreatingToken(googleUser);
+        const googleUserName = googleUser?.user?.displayName
+        const googleUserEmail = googleUser?.user;
+        CreatingToken(googleUserEmail, googleUserName);
     }
 
     const handleSignInWithGithub = () => {
@@ -65,7 +68,9 @@ const SignUp = () => {
 
 
     if (githubUser) {
-        CreatingToken(githubUser);
+        const githubUserName = githubUser?.user?.displayName;
+        console.log(githubUser?.user); 
+        CreatingToken(githubUser?.user, githubUserName);
     }
 
 
@@ -73,8 +78,13 @@ const SignUp = () => {
         navigate('/login')
     }
 
+    if (updating) {
+        return <Loading></Loading>
+    }
+
+
     return (
-        <div className='flex items-center justify-center h-screen'>
+        <div className='flex items-center justify-center h-screen sm:w-full xs:w-full'>
             <div className='grid'>
                 <div class="card w-96 bg-base-100 shadow-2xl">
                     <h1 className='flex justify-center mt-8 text-4xl text-sky-400'>Sign up</h1>
@@ -87,14 +97,14 @@ const SignUp = () => {
                                             <span class="label-text">Your name</span>
                                         </label>
                                         <input type="text" placeholder="Name" name='name' class="input input-bordered input-info w-full max-w-lg"
-                                        {...register("text", {
-                                            required: {
-                                                value: true,
-                                                message: 'Your name is required'
-                                            }
-                                        })}
-                                    />
-                                    {errors.text?.type === 'required' && <span className='text-red-500 label-text-alt'>{errors.text.message}</span>}
+                                            {...register("text", {
+                                                required: {
+                                                    value: true,
+                                                    message: 'Your name is required'
+                                                }
+                                            })}
+                                        />
+                                        {errors.text?.type === 'required' && <span className='text-red-500 label-text-alt'>{errors.text.message}</span>}
                                     </div>
                                 </div>
 
@@ -108,8 +118,8 @@ const SignUp = () => {
                                             required: {
                                                 value: true,
                                                 message: 'Email is required'
-                                            }, 
-                                            pattern:{
+                                            },
+                                            pattern: {
                                                 value: /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/,
                                                 message: 'Provide a valid email'
                                             }
@@ -148,23 +158,23 @@ const SignUp = () => {
                                     <label class="label">
                                         <span class="label-text">Confirm Password</span>
                                     </label>
-                                    <input type="password" name='confirmPassword' class="input input-bordered input-info w-full max-w-lg" 
-                                    {...register("confirmPassword", {
-                                        required: {
-                                            value: true,
-                                            message: 'Password is required'
-                                        },
-                                        minLength: {
-                                            value: 7,
-                                            message: 'Password must be 7 or longer'
-                                        }
-                                    })}
-                                />
-                                <label class="label">
-                                    {errors.password?.type === 'required' && <span className='text-red-500 label-text-alt'>{errors.password.message}</span>}
+                                    <input type="password" name='confirmPassword' class="input input-bordered input-info w-full max-w-lg"
+                                        {...register("confirmPassword", {
+                                            required: {
+                                                value: true,
+                                                message: 'Password is required'
+                                            },
+                                            minLength: {
+                                                value: 7,
+                                                message: 'Password must be 7 or longer'
+                                            }
+                                        })}
+                                    />
+                                    <label class="label">
+                                        {errors.password?.type === 'required' && <span className='text-red-500 label-text-alt'>{errors.password.message}</span>}
 
-                                    {errors.password?.type === 'minLength' && <span className='text-red-500 label-text-alt'>{errors.password.message}</span>}
-                                </label>
+                                        {errors.password?.type === 'minLength' && <span className='text-red-500 label-text-alt'>{errors.password.message}</span>}
+                                    </label>
                                 </div>
 
                                 {

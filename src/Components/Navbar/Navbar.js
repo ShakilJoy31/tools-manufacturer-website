@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import auth from '../firebase.init';
 import { signOut } from 'firebase/auth';
-import Loading from '../Shared/Loading';
 
 const Navbar = () => {
     const [generalUser] = useAuthState(auth);
@@ -12,20 +11,20 @@ const Navbar = () => {
         localStorage.removeItem('accessToken'); 
     }
         const navBarElements = <>
-        <li className='text-2xl flex justify-center items-center'><Link to='/blog'>BLog</Link></li>
+        <li className='flex items-center justify-center text-2xl'><Link to='/blog'>BLog</Link></li>
 
-        <li className='text-2xl flex justify-center items-center'><Link to='/myPortfolio'>My Portfolio</Link></li>
+        <li className='flex items-center justify-center text-2xl'><Link to='/myPortfolio'>My Portfolio</Link></li>
         {
-            generalUser && <li className='text-2xl flex justify-center items-center'><Link to='/dashboard'>Dash board</Link></li>
+            generalUser && <li className='flex items-center justify-center text-2xl'><Link to='/dashboard'>Dash board</Link></li>
         }
-        <li className='text-2xl flex justify-center items-center'><Link to='/'>Contact Us</Link></li>
+        <li className='flex items-center justify-center text-2xl'><Link to='/'>Contact Us</Link></li>
         {
             generalUser ? <div className='lg:flex'>
-                <li className='text-2xl flex justify-center items-center'><Link onClick={handleLogOut} to='/'>Log out</Link></li>
+                <li className='flex items-center justify-center text-2xl'><Link onClick={handleLogOut} to='/'>Log out</Link></li>
 
-                <li className='text-2xl flex justify-center items-center text-purple-500'>{generalUser?.displayName}</li>
+                <li className='flex items-center justify-center text-2xl text-purple-500'>{generalUser?.displayName}</li>
             </div>
-                : <li className='text-2xl flex justify-center items-center'><Link to='/login'>Log in</Link></li>
+                : <li className='flex items-center justify-center text-2xl'><Link to='/login'>Log in</Link></li>
         }
     </>
      

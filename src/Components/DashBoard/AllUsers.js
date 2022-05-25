@@ -6,9 +6,21 @@ import Loading from '../Shared/Loading';
 
 const AllUsers = () => {
     const [user] = useAuthState(auth); 
-    const {data, isLoading, refetch} = useQuery('users', ()=> fetch('http://localhost:5000/users')
-    .then(res => res.json()))
-
+    const [unauthorized, setUnAuth] = useState(''); 
+    const {data, isLoading, refetch} = useQuery('users', ()=> fetch(`http://localhost:5000/users/${user?.email}`, {
+        method: 'GET',
+        headers: {
+            'content-type':'application/json',
+            'authorization': `Bearer ${localStorage.getItem('accessToken')}`
+        }
+    })
+    .then(res =>{
+        if(res.status !== 200){
+            setUnAuth('You are Un Authorized or not an Admin!!!'); 
+            return; 
+        }
+        return res.json()
+    }))
 
     const handlemakeAdmin = (email) =>{
         const requesterEmail = user?.email; 
@@ -67,6 +79,10 @@ const AllUsers = () => {
 
 
             </table>
+            {
+                !data && <h1 className='flex justify-center mt-8 text-5xl text-red-600'>{unauthorized}</h1>
+            }
+            
         </div>
     );
 };

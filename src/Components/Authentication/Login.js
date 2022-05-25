@@ -56,20 +56,25 @@ const Login = () => {
         return <Loading></Loading>
     }
 
-    if (generalUser) {
-        CreatingToken(generalUser);
+    const name = generalUser?.displayName; 
+    if (generalUser && name) {
+        CreatingToken(generalUser, name);
     }
 
     if (googleUser) {
-        CreatingToken(googleUser);
+        const googleUserName = googleUser?.user?.displayName
+        const googleUserEmail = googleUser?.user;
+        CreatingToken(googleUserEmail, googleUserName);
     }
 
     if (githubUser) {
-        CreatingToken(githubUser);
+        const githubUserName = githubUser?.user?.displayName;
+        console.log(githubUser?.user); 
+        CreatingToken(githubUser?.user, githubUserName);
     }
 
     return (
-        <div className='flex items-center justify-center h-screen'>
+        <div className='flex items-center justify-center h-screen sm:w-full xs:w-full'>
             <div className='grid'>
                 <div class="card w-96 bg-base-100 shadow-2xl">
                     <h1 className='flex justify-center mt-8 text-4xl text-sky-400'>Log in</h1>
