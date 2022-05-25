@@ -31,18 +31,22 @@ const SignUp = () => {
     const [signInWithGithub, githubUser, githubLoading, githubError] = useSignInWithGithub(auth);
 
     const onSubmit = async event => {
-        event.preventDefault();
-        const name = event.target.name.value;
-        const email = event.target.email.value;
-        const password = event.target.password.value;
-        const confirmPassword = event.target.confirmPassword.value;
+        const name = event.text;
+        const email = event.email;
+        const password = event.password;
+        const confirmPassword = event.confirmPassword;
+        console.log(typeof password);
+        console.log(typeof confirmPassword);
         if (password === confirmPassword) {
             await createUserWithEmailAndPassword(email, password);
             await updateProfile({ displayName: name })
             navigate('/');
         }
+        return false; 
     }
 
+    console.log(generalUser); 
+    
     if (generalUser) {
         CreatingToken(generalUser);
     }
@@ -144,13 +148,29 @@ const SignUp = () => {
                                     <label class="label">
                                         <span class="label-text">Confirm Password</span>
                                     </label>
-                                    <input type="password" name='confirmPassword' class="input input-bordered input-info w-full max-w-lg" />
+                                    <input type="password" name='confirmPassword' class="input input-bordered input-info w-full max-w-lg" 
+                                    {...register("confirmPassword", {
+                                        required: {
+                                            value: true,
+                                            message: 'Password is required'
+                                        },
+                                        minLength: {
+                                            value: 7,
+                                            message: 'Password must be 7 or longer'
+                                        }
+                                    })}
+                                />
+                                <label class="label">
+                                    {errors.password?.type === 'required' && <span className='text-red-500 label-text-alt'>{errors.password.message}</span>}
+
+                                    {errors.password?.type === 'minLength' && <span className='text-red-500 label-text-alt'>{errors.password.message}</span>}
+                                </label>
                                 </div>
 
                                 {
                                     loading ? <button class="btn btn-outline btn-square loading mt-5 w-full">Signing up...</button> :
                                         <input type='submit' value='Sign up'
-                                            className='btn btn-outline block mx-auto w-full mt-5 text-xl max-w-lg'
+                                            className='block w-full max-w-lg mx-auto mt-5 text-xl btn btn-outline'
                                         />
                                 }
 

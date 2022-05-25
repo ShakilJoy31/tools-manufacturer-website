@@ -34,9 +34,8 @@ const Login = () => {
     const [signInWithGithub, githubUser, githubLoading, githubError] = useSignInWithGithub(auth);
 
     const onSubmit = event => {
-        event.preventDefault();
-        const email = event.target.email.value;
-        const password = event.target.password.value;
+        const email = event.email;
+        const password = event.password;
         signInWithEmailAndPassword(email, password);
     }
 
@@ -128,7 +127,7 @@ const Login = () => {
                                     <button class="btn btn-outline btn-square loading mt-5 w-full">Logging in...</button>
                                     :
                                     <input type='submit' value='Log in'
-                                        className='btn btn-outline block mx-auto w-full mt-5 text-xl max-w-lg'
+                                        className='block w-full max-w-lg mx-auto mt-5 text-xl btn btn-outline'
                                     />
                             }
 

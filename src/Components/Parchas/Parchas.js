@@ -12,6 +12,7 @@ const Parchas = () => {
   const [quantityError, setQuantityError] = useState('');
   const [lessQuantity, setLessQuantityError] = useState('');
   const [totalPrice, setTotalPrice] = useState(150 * 230);
+  const [updateQuantity, setUpdateQuantity] = useState('');
   const { id } = useParams();
   const [product, setProduct] = useState([]);
   const [success, setSuccess] = useState('');
@@ -22,8 +23,8 @@ const Parchas = () => {
   }, [])
 
   useEffect(() => {
-    setUpdatedProduct(product?.availableQuantity - 50)
-  }, [product?.availableQuantity])
+    setUpdatedProduct(product?.minimumOrder)
+  }, [product?.minimumOrder])
 
   const makeNumber = parseInt(product?.availableQuantity);
   let getProduct = parseInt(makeNumber - 50);
@@ -38,6 +39,12 @@ const Parchas = () => {
     setPhone(event.target.value);
   }
 
+  const handleProductUpdate = event =>{
+    setUpdateQuantity(event.target.value); 
+  }
+
+  console.log(updateQuantity); 
+
   const handleQuantityIncreased = () => {
     let makeInteger = parseInt(updatedProduct)
     getProduct = parseInt(makeInteger + 1);
@@ -51,6 +58,23 @@ const Parchas = () => {
     }
     else{
       setLessQuantityError('');
+    }
+
+    if(updateQuantity){
+      let updatedQuantity = parseInt(updateQuantity); 
+      let makeInteger = parseInt(updatedProduct)
+    getProduct = parseInt(makeInteger + updatedQuantity);
+    setUpdatedProduct(getProduct);
+    let price = getProduct * product?.price;
+    setTotalPrice(price);
+    if (getProduct > product?.availableQuantity) { 
+      setQuantityError('SORRY! Out of range!');
+      setUpdatedProduct(product?.availableQuantity);
+      return;
+    }
+    else{
+      setLessQuantityError('');
+    }
     }
   }
 
@@ -67,6 +91,22 @@ const Parchas = () => {
     }
     else{
       setQuantityError('')
+    }
+    if(updateQuantity){
+      let updatedQuantity = parseInt(updateQuantity); 
+      let makeInteger = parseInt(updatedProduct)
+    getProduct = parseInt(makeInteger - updatedQuantity);
+    setUpdatedProduct(getProduct);
+    let price = getProduct * product?.price;
+    setTotalPrice(price);
+    if (getProduct > product?.availableQuantity) { 
+      setQuantityError('SORRY! Out of range!');
+      setUpdatedProduct(product?.availableQuantity);
+      return;
+    }
+    else{
+      setLessQuantityError('');
+    }
     }
   }
 
@@ -120,17 +160,22 @@ const Parchas = () => {
                   <p><span className='text-orange-500'>Minimum Order: </span>{product?.minimumOrder}</p>
                   <p className='my-2'><span className='text-orange-500'>Available: </span>{product.availableQuantity}</p>
 
-                  <div className='flex'>
+                  <div className='block'>
                     <p><span className='text-orange-500'>Get {product?.name} : </span>{updatedProduct} pitch</p>
 
-                    <button onClick={handleQuantityIncreased} class="btn btn-success btn-xs ml-4 text-white">Increase</button>
-                    <button onClick={handleQuantityDecreased} class="btn btn-error btn-xs ml-4 text-white">Decrease</button>
+                    <div>
+                    <input onBlur={handleProductUpdate} type="text" placeholder="Increase or decrease quantity" class="input input-bordered input-xs w-full max-w-xs input-info" />
+                    <div className='flex justify-end'>
+                    <button onClick={handleQuantityIncreased} class="btn btn-success btn-xs ml-4 text-white mt-2">Increase</button>
+                    <button onClick={handleQuantityDecreased} class="btn btn-error mt-2 btn-xs ml-4 text-white">Decrease</button>
+                    </div>
+                    </div>
                   </div>
 
-                  <p className='text-red-600 my-2'>{quantityError}</p>
+                  <p className='my-2 text-red-600'>{quantityError}</p>
 
                   {
-                    lessQuantity && <p className='text-red-600 my-2'>{lessQuantity} {product?.minimumOrder}</p>
+                    lessQuantity && <p className='my-2 text-red-600'>{lessQuantity} {product?.minimumOrder}</p>
                   }
 
                   <p><span className='text-orange-500'>Price: </span>{product.price}$ per unit</p>
@@ -147,6 +192,7 @@ const Parchas = () => {
         <div class="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
           <div class="card-body">
             <h1 className='text-3xl'>Hello, <span className='text-green-500'>{user?.displayName}</span></h1>
+            <p className='text-orange-400'>To place the order, Fill the form here.</p>
             <div class="form-control">
               <label class="label">
                 <span class="label-text">Email</span>
