@@ -3,13 +3,14 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { toast, ToastContainer } from 'react-toastify';
 import auth from '../firebase.init';
 import 'react-toastify/dist/ReactToastify.css';
+import { info } from 'daisyui/src/colors/colorNames';
 
 const AddNewProduct = () => {
 
     const [name, setName] = useState('');
     const [minimumOrder, setOrder] = useState('');
     const [availableQuantity, setAvailable] = useState('');
-    
+    const [unauthorized, setUnAuth] = useState(''); 
     const [price, setPrice] = useState('');
     const [description, setDescription] = useState('');
     const [img, setPicture] = useState('');
@@ -47,13 +48,25 @@ const AddNewProduct = () => {
         fetch('http://localhost:5000/addproduct', {
             method: 'POST', 
             headers: {
-                'content-type':'application/json'
+                'content-type':'application/json',
+                'authorization': `Bearer ${localStorage.getItem('accessToken')}`
             }, 
             body: JSON.stringify(productInfo)
         })
-        .then(res => res.json())
+        .then(res =>{
+            if(res.status !== 200){
+                setUnAuth('You are Un Authorized or not an Admin!!!'); 
+                return; 
+            }
+            return res.json()
+        })
         .then(data => {
-            toast.success('Product successfully added to the Database'); 
+            if(!unauthorized){
+                toast.success('Product successfully added to the Database'); 
+            }
+            else{
+                toast.error('You are Un Authorized or not an Admin!!!'); 
+            }
         })
     }
 
@@ -62,7 +75,9 @@ const AddNewProduct = () => {
             <div class="hero-content flex-col lg:flex-row-reverse">
                 <div class="text-center lg:text-left">
                     <h1 class="text-5xl font-bold text-orange-400">Add a Product here. </h1>
-                    <p class="py-6"></p>
+                    {
+                unauthorized && <h1 className='flex justify-center mt-8 text-5xl text-red-600'>{unauthorized}</h1>
+            }
                 </div>
                 <div class="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
                     <div class="card-body">

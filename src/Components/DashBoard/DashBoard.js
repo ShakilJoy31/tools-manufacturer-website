@@ -9,7 +9,12 @@ const DashBoard = () => {
     useEffect(()=>{
         const adminEmail = user?.email; 
         if(adminEmail){
-            fetch(`http://localhost:5000/adminUser/${adminEmail}`)
+            fetch(`http://localhost:5000/adminUser/${adminEmail}`,{
+                headers: {
+                    'content-type':'application/json',
+                    'authorization': `Bearer ${localStorage.getItem('accessToken')}`
+                },
+            })
         .then(res => res.json())
         .then(data => {
             setAdmin(data); 

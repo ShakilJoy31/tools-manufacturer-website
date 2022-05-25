@@ -25,12 +25,7 @@ const ManageAllOrder = () => {
             })
             .then(data => setProduct(data))
     }, [])
-
-    // if(products?.message === 'Un Authorized'){
-    //     console.log('inside'); 
-    //     setUnAuth('You are Un Authorized or not an Admin!!!'); 
-    //     return; 
-    // }
+    
     const handleDeleteButton = (id) =>{
         setId(id); 
     }
