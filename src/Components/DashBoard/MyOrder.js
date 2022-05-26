@@ -15,7 +15,7 @@ const MyOrder = () => {
     const email = user?.email;
     useEffect(() => {
         if (email) {
-            fetch(`http://localhost:5000/getOrderedProducts/${email}`, {
+            fetch(`https://guarded-badlands-57795.herokuapp.com/getOrderedProducts/${email}`, {
                 method: 'GET',
                 headers: {
                     'authorization': `Bearer ${localStorage.getItem('accessToken')}`
@@ -44,7 +44,7 @@ const MyOrder = () => {
     }
 
     const handleDeleteProduct = () => {
-        fetch(`http://localhost:5000/deleteProduct/${deleteProduct}`, {
+        fetch(`https://guarded-badlands-57795.herokuapp.com/deleteProduct/${deleteProduct}`, {
             method: 'DELETE',
         })
             .then(res => res.json())

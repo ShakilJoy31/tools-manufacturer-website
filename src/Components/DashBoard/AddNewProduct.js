@@ -45,7 +45,7 @@ const AddNewProduct = () => {
 
     const handleSubmitButton = () => {
         const productInfo = {name, minimumOrder, availableQuantity, price, description, img};
-        fetch('http://localhost:5000/addproduct', {
+        fetch('https://guarded-badlands-57795.herokuapp.com/addproduct', {
             method: 'POST', 
             headers: {
                 'content-type':'application/json',

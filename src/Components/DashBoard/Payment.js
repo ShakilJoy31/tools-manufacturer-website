@@ -11,7 +11,7 @@ const Payment = () => {
     const [updatedProduct, setUpdatedProduct] = useState();
     const [product, setProduct] = useState([]);
     useEffect(() => {
-        fetch(`http://localhost:5000/toolForPayment/${id}`)
+        fetch(`https://guarded-badlands-57795.herokuapp.com/toolForPayment/${id}`)
             .then(res => res.json())
             .then(data => setProduct(data))
     }, [])

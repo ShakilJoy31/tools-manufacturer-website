@@ -33,7 +33,7 @@ const AddReview = () => {
     const handleSubmitButton = () =>{
         const userReview = { name, email, ratings, img, review };
         console.log(userReview);  
-        fetch('http://localhost:5000/review', {
+        fetch('https://guarded-badlands-57795.herokuapp.com/review', {
             method: 'POST', 
             headers: {
                 'content-type':'application/json'

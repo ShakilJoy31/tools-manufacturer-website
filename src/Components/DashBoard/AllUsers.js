@@ -7,7 +7,7 @@ import Loading from '../Shared/Loading';
 const AllUsers = () => {
     const [user] = useAuthState(auth); 
     const [unauthorized, setUnAuth] = useState(''); 
-    const {data, isLoading, refetch} = useQuery('users', ()=> fetch(`http://localhost:5000/users/${user?.email}`, {
+    const {data, isLoading, refetch} = useQuery('users', ()=> fetch(`https://guarded-badlands-57795.herokuapp.com/users/${user?.email}`, {
         method: 'GET',
         headers: {
             'content-type':'application/json',
@@ -24,7 +24,7 @@ const AllUsers = () => {
 
     const handlemakeAdmin = (email) =>{
         const requesterEmail = user?.email; 
-        fetch(`http://localhost:5000/user/admin/${email}`, {
+        fetch(`https://guarded-badlands-57795.herokuapp.com/user/admin/${email}`, {
             method: 'PUT',
             headers: {
                 'content-type':'application/json',

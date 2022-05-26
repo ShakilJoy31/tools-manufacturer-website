@@ -38,7 +38,7 @@ const MyProfile = () => {
             return; 
         }
         const updatedUser = { updatedName, updatedEmail, phone, address, education, linkedin };
-        fetch('http://localhost:5000/updateProfile', {
+        fetch('https://guarded-badlands-57795.herokuapp.com/updateProfile', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'

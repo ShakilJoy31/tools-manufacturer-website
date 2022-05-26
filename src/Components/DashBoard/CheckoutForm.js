@@ -14,7 +14,7 @@ const CheckoutForm = ({ product }) => {
 
     useEffect(() => {
         if (totalPrice) {
-            fetch('http://localhost:5000/create-payment-intent', {
+            fetch('https://guarded-badlands-57795.herokuapp.com/create-payment-intent', {
                 method: 'POST',
                 headers: {
                     'content-type': 'application/json'
@@ -79,7 +79,7 @@ const CheckoutForm = ({ product }) => {
     }
 
     if(intentSuccess){
-        fetch(`http://localhost:5000/paid/${_id}`, {
+        fetch(`https://guarded-badlands-57795.herokuapp.com/paid/${_id}`, {
             method: 'PUT', 
             headers:{
                 'content-type':'application/json'

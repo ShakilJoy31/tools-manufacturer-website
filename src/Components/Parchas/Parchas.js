@@ -17,7 +17,7 @@ const Parchas = () => {
   const [product, setProduct] = useState([]);
   const [success, setSuccess] = useState('');
   useEffect(() => {
-    fetch(`http://localhost:5000/parchas/${id}`)
+    fetch(`https://guarded-badlands-57795.herokuapp.com/parchas/${id}`)
       .then(res => res.json())
       .then(data => setProduct(data))
   }, [])
@@ -119,7 +119,7 @@ const Parchas = () => {
     const img = product.img;
     const information = { name, email, address, phone, productName, orderedProduct, price, img, totalPrice };
 
-    fetch('http://localhost:5000/addUserProduct', {
+    fetch('https://guarded-badlands-57795.herokuapp.com/addUserProduct', {
       method: 'POST',
       headers: {
         'content-type': 'application/json'
@@ -128,7 +128,7 @@ const Parchas = () => {
     })
       .then(res => res.json())
       .then(data => {
-        fetch(`http://localhost:5000/product/${id}`, {
+        fetch(`https://guarded-badlands-57795.herokuapp.com/product/${id}`, {
           method: 'PUT',
           headers: {
             'content-type': 'application/json'

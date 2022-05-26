@@ -9,7 +9,7 @@ const AllProduct = () => {
     const [shipped, setShipped] = useState(null);
     const [shipmentConfirmedBy, setShipmentConfirmed] = useState(null);
 
-    const {data: allProduct, isLoading, refetch} = useQuery('users', ()=> fetch('http://localhost:5000/allProductForAdmin', {
+    const {data: allProduct, isLoading, refetch} = useQuery('users', ()=> fetch('https://guarded-badlands-57795.herokuapp.com/allProductForAdmin', {
         method: 'GET',
         headers: {
             'content-type':'application/json',
@@ -23,7 +23,7 @@ const AllProduct = () => {
     }
 
     const handleDeleteFromDB = () => {
-        fetch(`http://localhost:5000/deleteProduct/${deletedId}`, {
+        fetch(`https://guarded-badlands-57795.herokuapp.com/deleteProduct/${deletedId}`, {
             method: 'DELETE'
         })
             .then(res => res.json())
@@ -41,7 +41,7 @@ const AllProduct = () => {
     }
 
     const handleConfirmShipped = () =>{
-        fetch(`http://localhost:5000/shippedProduct/${shippedProduct}`, {
+        fetch(`https://guarded-badlands-57795.herokuapp.com/shippedProduct/${shippedProduct}`, {
             method: 'PUT',
             headers: {
                 'content-type':'application/json'

@@ -9,7 +9,7 @@ const DashBoard = () => {
     useEffect(()=>{
         const adminEmail = user?.email; 
         if(adminEmail){
-            fetch(`http://localhost:5000/adminUser/${adminEmail}`,{
+            fetch(`https://guarded-badlands-57795.herokuapp.com/adminUser/${adminEmail}`,{
                 headers: {
                     'content-type':'application/json',
                     'authorization': `Bearer ${localStorage.getItem('accessToken')}`
