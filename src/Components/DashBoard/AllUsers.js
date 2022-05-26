@@ -46,7 +46,7 @@ const AllUsers = () => {
 
     
     return (
-        <div class="overflow-x-auto">
+        <div class="overflow-x-auto lg:mx-16 md:mx-8 sm:mx-4 xm:mx-2 mb-8">
             <table class="table w-full">
                 <thead>
                     <tr>

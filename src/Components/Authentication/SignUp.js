@@ -198,9 +198,9 @@ const SignUp = () => {
                                 </label>
 
                                 <div class="divider text-sky-400">OR</div>
-
-
-                                {
+                            </div>
+                        </form>
+                        {
                                     googleLoading ? <button class="btn btn-outline btn-square loading w-full">Signing up with google...</button> :
                                         <button onClick={handleSignInWithGoogle} class="btn btn-outline block mx-auto w-full mt-2 text-xl max-w-lg">Continue with google</button>
                                 }
@@ -218,8 +218,6 @@ const SignUp = () => {
                                 {
                                     githubError ? <p className='mt-4 mb-4 text-red-700'>{githubError.message}</p> : ''
                                 }
-                            </div>
-                        </form>
                     </div>
                 </div>
             </div>

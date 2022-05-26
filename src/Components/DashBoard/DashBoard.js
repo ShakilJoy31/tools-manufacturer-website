@@ -20,8 +20,8 @@ const DashBoard = () => {
             setAdmin(data); 
         })
         }
-        
     },[admin])
+
 
     return (
         <div>

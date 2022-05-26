@@ -49,13 +49,14 @@ const AllProduct = () => {
             body: JSON.stringify({paymentStatus: 'shipped'})
         })
         .then(res => res.json())
-        .then(data => setShippedProduct(null))
+        .then(data => {console.log(data)})
+        setShippedProduct(null); 
         refetch(); 
     }
 
     console.log(shipmentConfirmedBy); 
     return (
-        <div className='mt-8'>
+        <div className='mt-12 lg:mx-12 md:mx-4'>
             <div class="overflow-x-auto">
                 <table class="table w-full">
                     <thead>

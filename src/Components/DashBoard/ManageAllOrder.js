@@ -43,7 +43,7 @@ const ManageAllOrder = () => {
     }
 
     return (
-        <div>
+        <div className='mb-8 lg:mx-16 md:mx-8 sm:mx-4 xm:mx-2'>
             <div class="overflow-x-auto">
                 <table class="table w-full">
 

@@ -17,7 +17,6 @@ const Navbar = () => {
         {
             generalUser && <li className='flex items-center justify-center text-2xl'><Link to='/dashboard'>Dash board</Link></li>
         }
-        <li className='flex items-center justify-center text-2xl'><Link to='/'>Contact Us</Link></li>
         {
             generalUser ? <div className='lg:flex'>
                 <li className='flex items-center justify-center text-2xl'><Link onClick={handleLogOut} to='/'>Log out</Link></li>
@@ -30,8 +29,8 @@ const Navbar = () => {
      
 
     return (
-        <div>
-            <div class="navbar bg-base-100 flex justify-between">
+        <div className='lg:mx-24 bg-sky-100'>
+            <div class="navbar flex justify-between">
                 <div class="navbar-start">
                     <div class="dropdown">
                         <label tabindex="0" class="btn btn-ghost lg:hidden">

@@ -38,7 +38,7 @@ const MyOrder = () => {
 
     if (tokenError) {
         return <div>
-            <p className='text-4xl flex justify-center text-red-500'>{tokenError}</p>
+            <p className='flex justify-center text-4xl text-red-500'>{tokenError}</p>
             <Loading></Loading>
         </div>
     }
@@ -66,7 +66,7 @@ const MyOrder = () => {
 
 
     return (
-        <div class="overflow-x-auto mt-12 mr-12">
+        <div class="overflow-x-auto mt-12 lg:mx-16 md:mx-8 sm:mx-4 xm:mx-2 mb-8">
             <table class="table table-zebra w-full">
                 <thead>
                     <tr>
